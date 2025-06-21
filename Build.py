@@ -6,7 +6,7 @@ import subprocess
 import pyuac
 import shutil
 
-LOVE_DIR = "C:/Program Files/LOVE" # if you for some reason dont wanna add love to your environment variables (it doesnt take long!)
+LOVE_DIR = "C:/Program Files/LOVE" # is this inaccurate?
 # then edit this ^
 # (check if its there first, when i installed love it didnt add it there, but it should add itself)
 #path_environ = os.environ.get("path").split(";")

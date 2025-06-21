@@ -12,9 +12,9 @@ But if you're fine with that, lets go ahead and build it!
 Firstly, make sure you have Python installed, and that you're on **windows**. I'm sorry, but this build script only support windows. If you're not, you'll have to follow the build instructions [here](https://love2d.org/wiki/Game_Distribution) manually.
 
 Now, you need to make sure you know where you installed LOVE. Go ahead and open up Build.py in an IDE of your choice.  
-Now check if the path is accurate, if not, change it to where LOVE actually is on your machine.
+Now check if the path is accurate, if not, change it to where LOVE actually is on your machine.  
 
-Next, open up a terminal in _**administrator**_ (important or the build might be broken).
+Next, open up a terminal as _**administrator**_ (important or the build might be broken). (right click start > Windows Terminal (Admin))
 
 Now `cd` into the source folder if you haven't already.
 
