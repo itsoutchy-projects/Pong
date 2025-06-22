@@ -42,19 +42,27 @@ local pointSound = nil
 
 local shotDir = nil
 
+local beforeScaleW = 1280
+local beforeScaleH = 720
+
 local shotDuration = 5
 local shotTicks = shotDuration * love.timer.getFPS()
 local ticksFromShot = 0
 local currShot = nil
 local shotted = false -- gets reset after we've dealt with the screenshot. why do you NEED to wait until the next frame???
 
+local deadzone = 0.1 -- minumum axis (joystick) value for paddle to move. Prevents paddles sliding at slight movement
+
+--local canvas = nil
+
 function exists(thing) return thing == nil end -- possible because lua is stupid and returns nil instead of throwing error when trying to get value
 
 function love.graphics._effectCodeToGLSL(code) return code end
 
 function love.load()
-    love.window.setMode(1280, 720)
+    --love.window.setMode(1280, 720)
     love.graphics.setBackgroundColor(0.05, 0.05, 0.05)
+    --canvas = love.graphics.newCanvas(1280, 720)
     love.window.setTitle("Pong - "..scene)
     font = love.graphics.newFont("bit5x3.ttf", 250)
     fpsFont = love.graphics.newFont("bit5x3.ttf", 15)
@@ -83,6 +91,12 @@ function love.load()
     effect.desaturate.tint = {100, 100, 100}
     effect.disable("desaturate")
     effect.filmgrain.size = 17
+end
+
+function love.resize(w, h)
+    love.graphics.scale(w - beforeScaleW, h - beforeScaleH)
+    beforeScaleW = w
+    beforeScaleH = h
 end
 
 -- success, valueOrErrormsg = runFile( name )
@@ -137,7 +151,10 @@ function goToGame()
     love.audio.play(paddleSound)
         for i, f in ipairs(love.filesystem.getDirectoryItems("scripts")) do
             if string.find(f, ".lua") then
-                runFile("scripts/"..f)
+                success, errorMsg = runFile("scripts/"..f)
+                if not success then
+                    love.window.showMessageBox("Error in Lua script "..f.."!", errorMsg)
+                end
             end
         end
     scene = "Game"
@@ -145,6 +162,9 @@ function goToGame()
 end
 
 function love.keypressed(key, scancode)
+    if key == "f11" then
+        love.window.setFullscreen(not love.window.getFullscreen())
+    end
     width, height, flags = love.window.getMode()
     if scene == "Menu" then
         dir = 1
@@ -247,6 +267,8 @@ end
 
 local actualShotted = false
 
+local totalTicks = 0
+
 function love.draw()
     love.window.setTitle("Pong - "..scene)
     width, height, flags = love.window.getMode()
@@ -281,9 +303,13 @@ function love.draw()
                 sticks = love.joystick.getJoysticks()
                 for i, joystick in ipairs(sticks) do
                     if i == 1 then
-                        paddleYLeft = paddleYLeft + (joystick:getGamepadAxis("lefty") * speedLeft)
+                        if math.abs(joystick:getGamepadAxis("lefty")) > deadzone then
+                            paddleYLeft = paddleYLeft + (joystick:getGamepadAxis("lefty") * speedLeft)
+                        end
                         if love.joystick.getJoystickCount() == 1 then
-                            paddleYRight = paddleYRight + (joystick:getGamepadAxis("righty") * speedRight)
+                            if math.abs(joystick:getGamepadAxis("righty")) > deadzone then
+                                paddleYRight = paddleYRight + (joystick:getGamepadAxis("righty") * speedRight)
+                            end
                         end
                         if joystick:isGamepadDown("dpup") then
                             paddleYLeft = paddleYLeft - speedLeft
@@ -293,7 +319,9 @@ function love.draw()
                         end
                     end
                     if i == 2 then
-                        paddleYRight = paddleYRight - (joystick:getGamepadAxis("lefty") * speedRight)
+                        if math.abs(joystick:getGamepadAxis("lefty")) > deadzone then
+                            paddleYRight = paddleYRight + (joystick:getGamepadAxis("lefty") * speedRight)
+                        end
                         if joystick:isGamepadDown("dpup") then
                             paddleYRight = paddleYRight - speedRight
                         end
@@ -373,5 +401,6 @@ function love.draw()
         love.graphics.draw(currShot, 0, 40 + fpsFont:getHeight(), 0, currShot:getWidth() * 0.3, currShot:getHeight() * 0.3)
     end
     actualShotted = shotted
+    totalTicks = totalTicks + 1
     love.graphics.print(shotDir, 0, 40)
 end
