@@ -35,6 +35,11 @@ Directory not found or file not found:
 Do you have Love2D installed? Confirm by running `love --version`
 """
 
+gitignore = ""
+if os.path.exists(".gitignore"):
+    with open(".gitignore", "r") as f:
+        gitignore = f.read()
+
 if not "win" in sys.platform:
     print("Sorry! This script can only be run on windows :(")
     exit()
@@ -49,7 +54,7 @@ def zipfolder(foldername, target_dir):
     for base, dirs, files in os.walk(target_dir):
         for file in files:
             print(base)
-            if not "zip" in file and not "Build" in file and not ".love" in file and not "build" in base: # dont include build files in the archive
+            if not "zip" in file and not "Build" in file and not ".love" in file and not "build" in base and not file in gitignore and not base in gitignore and not ".git" in base and not ".git" in file: # dont include build files in the archive
                 fn = os.path.join(base, file)
                 zipobj.write(fn, fn[rootlen:])
     print(zipobj.testzip())
