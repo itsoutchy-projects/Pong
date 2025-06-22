@@ -1,3 +1,7 @@
+--if love.filesystem then
+--    require 'rocks' ()
+--end
+
 function love.conf(t)
     t.identity = "Pong"                    -- The name of the save directory (string)
     t.appendidentity = false            -- Search files in source directory before save directory (boolean)
@@ -7,6 +11,10 @@ function love.conf(t)
     t.externalstorage = false           -- True to save files (and read from the save directory) in external storage on Android (boolean) 
     t.gammacorrect = false              -- Enable gamma-correct rendering, when supported by the system (boolean)
 
+    --t.dependencies = {
+
+    --}
+
     t.audio.mic = false                 -- Request and use microphone capabilities in Android (boolean)
     t.audio.mixwithsystem = true        -- Keep background music playing when opening LOVE (boolean, iOS and Android only)
 
@@ -15,9 +23,9 @@ function love.conf(t)
     t.window.width = 1280                -- The window width (number)
     t.window.height = 720               -- The window height (number)
     t.window.borderless = false         -- Remove all border visuals from the window (boolean)
-    t.window.resizable = true          -- Let the window be user-resizable (boolean)
-    t.window.minwidth = 1               -- Minimum window width if the window is resizable (number)
-    t.window.minheight = 1              -- Minimum window height if the window is resizable (number)
+    t.window.resizable = false          -- Let the window be user-resizable (boolean)
+    t.window.minwidth = 1280               -- Minimum window width if the window is resizable (number)
+    t.window.minheight = 720              -- Minimum window height if the window is resizable (number)
     t.window.fullscreen = false         -- Enable fullscreen (boolean)
     t.window.fullscreentype = "desktop" -- Choose between "desktop" fullscreen or "exclusive" fullscreen mode (string)
     t.window.vsync = 1                  -- Vertical sync mode (number)
