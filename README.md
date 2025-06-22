@@ -27,6 +27,15 @@ Wait for it to finish, then you'll have a new folder called "build`, go into the
 ### Important
 LOVE requires that you *keep* the license.txt file in the build, so don't delete it.
 
+## Modding
+You can add your own Lua scripts that will be run after you pick your difficulty and play.
+
+These scripts should be in: `%appdata%/LOVE/Pong`, make a folder inside of there called "scripts", and put all your Lua scripts in there.
+
+The documentation for these scripts is the same as [LOVE's documentation](https://love2d.org/wiki/Main_Page).
+
+Though do note that support for these scripts is limited, at the moment, you cannot change Pong specific stuff (paddle positions, speeds, etc), you can only make your own stuff and use those, and along with those limits, love.draw seems to break the game (overrides the game's love.draw????), so be careful when using it.
+
 ## Credits
 - LOVE - The framework used to create this game
 - Moonshine - The source of the shaders and effects
