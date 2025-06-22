@@ -1,6 +1,11 @@
 # Pong
 Pong was a game built for the Atari in 1972. I have decided to build upon the concept of Pong to make this game
 
+## Contents
+[How to build](#how-to-build) - Build instructions  
+[Modding](#modding) - Modding documentation  
+[Credits](#credits) - All the credits
+
 ## How to build
 First, go ahead and install [LOVE](https://love2d.org/).
 Now, if you open a terminal in the folder with all the source, you can just run:  
